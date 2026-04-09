@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbería</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+        }
+
+        input, select, button {
+            margin: 5px;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>DFM BARBERSHOP</h2>
+
+    
+    <h3>Usuario</h3>
+    <input type="text" id="nombre" placeholder="Nombre">
+    <button onclick="registrar()">Registrar</button>
+
+    
+    <h3>Agendar Cita</h3>
+    <input type="text" id="cliente" placeholder="Cliente">
+    <input type="text" id="barbero" placeholder="Barbero">
+
+    <select id="servicio">
+        <option>Corte</option>
+        <option>Cejas</option>
+    </select>
+
+    <select id="hora">
+       <option>09:00 AM</option>
+    <option>10:00 AM</option>
+    <option>11:00 AM</option>
+    <option>12:00 PM</option>
+    <option>01:00 PM</option>
+    <option>02:00 PM</option>
+    <option>03:00 PM</option>
+    <option>04:00 PM</option>
+    <option>05:00 PM</option>
+    <option>06:00 PM</option>
+    <option>07:00 PM</option>
+    <option>08:00 PM</option>
+    <option>09:00 PM</option>
+    </select>
+
+    <button onclick="agendar()">Agendar</button>
+
+    
+    <h3>Citas</h3>
+    <div id="lista"></div>
+
+    
+    <h3>Historial</h3>
+    <div id="historial"></div>
+
+    <script>
+        let usuarios = [];
+        let citas = [];
+
+        function registrar() {
+            let nombre = document.getElementById("nombre").value;
+
+            if(nombre === "") {
+                alert("Ingrese Nombre");
+                return;
+            }
+
+            usuarios.push(nombre);
+            alert("Registrado");
+        }
+
+        function disponible(hora, barbero) {
+            return !citas.some(c => c.hora === hora && c.barbero === barbero);
+        }
+
+        function agendar() {
+            let cliente = document.getElementById("cliente").value;
+            let barbero = document.getElementById("barbero").value;
+            let servicio = document.getElementById("servicio").value;
+            let hora = document.getElementById("hora").value;
+
+            if(cliente === "" || barbero === "") {
+                alert("Complete datos");
+                return;
+            }
+
+            if(disponible(hora, barbero)) {
+                citas.push({cliente, barbero, servicio, hora});
+                mostrar();
+                mostrarHistorial(); 
+            } else {
+                alert("Hora Ocupada");
+            }
+        }
+
+        function mostrar() {
+            let lista = document.getElementById("lista");
+            lista.innerHTML = "";
+
+            citas.forEach(c => {
+                lista.innerHTML += `<p>${c.cliente} - ${c.barbero} - ${c.servicio} - ${c.hora}</p>`;
+            });
+        }
+
+        
+        function mostrarHistorial() {
+            let historial = document.getElementById("historial");
+            historial.innerHTML = "";
+
+            citas.forEach(c => {
+                historial.innerHTML += `<p>${c.cliente} - ${c.barbero} - ${c.servicio} - ${c.hora}</p>`;
+            });
+        }
+    </script>
+
+</body>
+</html>
